@@ -5,9 +5,14 @@ import com.POS_system_backend.entity.User;
 import com.POS_system_backend.repository.UserRepository;
 import com.POS_system_backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-@Service
+import java.util.List;
+import java.util.Optional;
+
+@Service("userService")
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -29,5 +34,29 @@ public class UserServiceImpl implements UserService {
             throw new Exception("User not found with email: " + email);
         }
         return user;
+    }
+
+    @Override
+    public User findUserById(Long userId) throws Exception {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isEmpty()) {
+            throw new Exception("User not found with id: " + userId);
+        }
+        return user.get();
+    }
+
+    @Override
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public User getCurrentUser() throws Exception {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new Exception("No authenticated user found");
+        }
+        String email = authentication.getName();
+        return findUserByEmail(email);
     }
 }
