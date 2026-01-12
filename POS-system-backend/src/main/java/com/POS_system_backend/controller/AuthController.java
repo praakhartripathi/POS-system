@@ -1,11 +1,9 @@
 package com.POS_system_backend.controller;
 
 import com.POS_system_backend.configuration.JwtProvider;
-import com.POS_system_backend.dto.AuthResponse;
-import com.POS_system_backend.dto.LoginRequest;
-import com.POS_system_backend.dto.SignupRequest;
+import com.POS_system_backend.dto.*;
 import com.POS_system_backend.entity.User;
-import com.POS_system_backend.service.UserService;
+import com.POS_system_backend.service.AuthService;
 import com.POS_system_backend.service.impl.CustomUserImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     @Autowired
-    private UserService userService;
+    private AuthService authService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -46,7 +44,7 @@ public class AuthController {
         user.setPhone(signupRequest.getPhone());
         user.setRole(signupRequest.getRole());
 
-        User createdUser = userService.createUser(user);
+        User createdUser = authService.createUser(user);
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(createdUser.getEmail(), createdUser.getPassword());
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -68,11 +66,23 @@ public class AuthController {
 
         String token = jwtProvider.generateToken(authentication);
         
-        User user = userService.findUserByEmail(username);
+        User user = authService.findUserByEmail(username);
 
         AuthResponse authResponse = new AuthResponse(token, "Signin Success", String.valueOf(user.getRole()));
 
         return new ResponseEntity<>(authResponse, HttpStatus.OK);
+    }
+
+    @PostMapping("/update-password")
+    public ResponseEntity<String> updatePassword(@RequestBody UpdatePasswordRequest request) throws Exception {
+        authService.updatePassword(request.getEmail(), request.getNewPassword());
+        return new ResponseEntity<>("Password updated successfully", HttpStatus.OK);
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> forgotPassword(@RequestBody ForgotPasswordRequest request) throws Exception {
+        authService.forgotPassword(request.getEmail());
+        return new ResponseEntity<>("Password reset link sent to your email", HttpStatus.OK);
     }
 
     private Authentication authenticate(String username, String password) {

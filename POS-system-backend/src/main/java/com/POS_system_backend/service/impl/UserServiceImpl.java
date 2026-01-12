@@ -1,10 +1,10 @@
 package com.POS_system_backend.service.impl;
 
+import com.POS_system_backend.configuration.JwtProvider;
 import com.POS_system_backend.entity.User;
 import com.POS_system_backend.repository.UserRepository;
 import com.POS_system_backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,23 +14,12 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private JwtProvider jwtProvider;
 
     @Override
-    public User createUser(User user) throws Exception {
-        User existingUser = userRepository.findByEmail(user.getEmail());
-        if (existingUser != null) {
-            throw new Exception("Email is already used with another account");
-        }
-
-        User createdUser = new User();
-        createdUser.setEmail(user.getEmail());
-        createdUser.setFullName(user.getFullName());
-        createdUser.setRole(user.getRole());
-        createdUser.setPassword(passwordEncoder.encode(user.getPassword()));
-        createdUser.setPhone(user.getPhone());
-        
-        return userRepository.save(createdUser);
+    public User findUserByJwtToken(String jwt) throws Exception {
+        String email = jwtProvider.getEmailFromToken(jwt);
+        return findUserByEmail(email);
     }
 
     @Override

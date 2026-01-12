@@ -5,7 +5,7 @@ import com.POS_system_backend.dto.LoginRequest;
 import com.POS_system_backend.dto.SignupRequest;
 import com.POS_system_backend.entity.User;
 import com.POS_system_backend.entity.enums.UserRole;
-import com.POS_system_backend.service.UserService;
+import com.POS_system_backend.service.AuthService;
 import com.POS_system_backend.service.impl.CustomUserImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,7 +36,7 @@ class AuthControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private UserService userService;
+    private AuthService authService;
 
     @Mock
     private PasswordEncoder passwordEncoder;
@@ -72,7 +72,7 @@ class AuthControllerTest {
         user.setFullName("Test User");
         user.setRole(UserRole.ROLE_USER);
 
-        when(userService.createUser(any(User.class))).thenReturn(user);
+        when(authService.createUser(any(User.class))).thenReturn(user);
         when(jwtProvider.generateToken(any(Authentication.class))).thenReturn("jwt_token");
 
         mockMvc.perform(post("/api/auth/signup")
@@ -104,7 +104,7 @@ class AuthControllerTest {
         when(customUserImpl.loadUserByUsername(email)).thenReturn(userDetails);
         when(passwordEncoder.matches(password, "encodedPassword")).thenReturn(true);
         when(jwtProvider.generateToken(any(Authentication.class))).thenReturn("jwt_token");
-        when(userService.findUserByEmail(email)).thenReturn(user);
+        when(authService.findUserByEmail(email)).thenReturn(user);
 
         mockMvc.perform(post("/api/auth/signin")
                 .contentType(MediaType.APPLICATION_JSON)
