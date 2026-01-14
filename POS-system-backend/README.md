@@ -23,6 +23,9 @@ A robust Point of Sale (POS) system backend built with Spring Boot, designed to 
     *   Create and manage orders.
     *   Filter orders by branch, customer, cashier, status, and date.
     *   Track top-selling orders.
+*   **Shift Management**:
+    *   Start and end cashier shifts.
+    *   Generate shift reports with sales, refunds, and top-selling products.
 
 ## 🛠️ Tech Stack
 
@@ -42,7 +45,7 @@ A robust Point of Sale (POS) system backend built with Spring Boot, designed to 
 ```
 com.POS_system_backend
 ├── configuration   # Security & JWT config
-├── controller      # REST API Endpoints (Auth, Product, Store, User, Category, Branch, Inventory, Order, Employee, Customer)
+├── controller      # REST API Endpoints (Auth, Product, Store, User, Category, Branch, Inventory, Order, Employee, Customer, ShiftReport)
 ├── dto             # Data Transfer Objects
 ├── entity          # JPA Entities (User, Product, Store, Order, Branch, Inventory, Customer, etc.)
 ├── mapper          # Entity <-> DTO Mappers
@@ -112,6 +115,16 @@ com.POS_system_backend
 *   `GET /api/orders/branch/{branchId}/top5` - Get top 5 orders by value for a branch.
 *   `GET /api/orders/cashier/{cashierId}` - Get orders processed by a cashier.
 *   `GET /api/orders/customer/{customerId}` - Get orders for a specific customer.
+
+### Shift Reports
+*   `POST /api/shift-reports/start` - Start a new shift for a cashier at a branch.
+*   `POST /api/shift-reports/{id}/end` - End a specific shift.
+*   `GET /api/shift-reports/{id}` - Get a shift report by its ID.
+*   `GET /api/shift-reports` - Get all shift reports.
+*   `GET /api/shift-reports/branch/{branchId}` - Get all shift reports for a specific branch.
+*   `GET /api/shift-reports/cashier/{cashierId}` - Get all shift reports for a specific cashier.
+*   `GET /api/shift-reports/current-progress/{cashierId}` - Get the current progress of an active shift for a cashier.
+*   `GET /api/shift-reports/cashier/{cashierId}/date` - Get shift reports for a cashier on a specific date.
 
 ### Stores
 *   (Endpoints available in `StoreController`)
