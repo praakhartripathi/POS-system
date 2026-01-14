@@ -8,13 +8,21 @@ A robust Point of Sale (POS) system backend built with Spring Boot, designed to 
     *   Roles: `ROLE_USER`, `ROLE_ADMIN`, `ROLE_CASHIER`, `ROLE_BRANCH_MANAGER`, `ROLE_STORE_MANAGER`, `ROLE_SUPERADMIN`.
 *   **User Management**: Sign up, sign in, password management (forgot/update), and profile handling.
 *   **Store Management**: Create and manage stores, including support for parent stores and branches.
+*   **Branch Management**: Manage individual store branches, including working hours and contact info.
+*   **Employee Management**: Manage employees for stores and branches.
+*   **Customer Management**: Create, update, search, and manage customer profiles.
 *   **Product Management**:
     *   Create, update, delete products.
     *   Categorize products.
     *   Search products by name, description, or brand.
     *   Filter products by store.
-*   **Inventory Control**: Track stock levels (SKU based).
-*   **Order Processing**: (Structure present, implementation in progress) Manage orders and order items.
+*   **Inventory Control**: 
+    *   Track stock levels per branch and product.
+    *   Search inventory by product name.
+*   **Order Processing**: 
+    *   Create and manage orders.
+    *   Filter orders by branch, customer, cashier, status, and date.
+    *   Track top-selling orders.
 
 ## 🛠️ Tech Stack
 
@@ -34,9 +42,9 @@ A robust Point of Sale (POS) system backend built with Spring Boot, designed to 
 ```
 com.POS_system_backend
 ├── configuration   # Security & JWT config
-├── controller      # REST API Endpoints (Auth, Product, Store, User, Category)
+├── controller      # REST API Endpoints (Auth, Product, Store, User, Category, Branch, Inventory, Order, Employee, Customer)
 ├── dto             # Data Transfer Objects
-├── entity          # JPA Entities (User, Product, Store, Order, etc.)
+├── entity          # JPA Entities (User, Product, Store, Order, Branch, Inventory, Customer, etc.)
 ├── mapper          # Entity <-> DTO Mappers
 ├── repository      # Data Access Layer
 ├── service         # Business Logic Interfaces
@@ -60,6 +68,50 @@ com.POS_system_backend
 
 ### Categories
 *   `POST /api/categories` - Create a new product category.
+*   `PUT /api/categories/{categoryId}` - Update a category.
+*   `DELETE /api/categories/{categoryId}` - Delete a category.
+*   `GET /api/categories/store/{storeId}` - Get all categories for a store.
+
+### Branches
+*   `POST /api/branches` - Create a new branch.
+*   `PUT /api/branches/{branchId}` - Update a branch.
+*   `DELETE /api/branches/{branchId}` - Delete a branch.
+*   `GET /api/branches/store/{storeId}` - Get all branches for a store.
+*   `GET /api/branches/{branchId}` - Get branch details by ID.
+
+### Employees
+*   `POST /api/employees/store` - Create a store employee.
+*   `POST /api/employees/branch` - Create a branch employee.
+*   `PUT /api/employees/{employeeId}` - Update an employee.
+*   `DELETE /api/employees/{employeeId}` - Delete an employee.
+*   `GET /api/employees/store/{storeId}` - Get all employees for a store.
+*   `GET /api/employees/branch/{branchId}` - Get all employees for a branch.
+
+### Customers
+*   `POST /api/customers` - Create a new customer.
+*   `PUT /api/customers/{customerId}` - Update a customer.
+*   `DELETE /api/customers/{customerId}` - Delete a customer.
+*   `GET /api/customers/{customerId}` - Get customer by ID.
+*   `GET /api/customers` - Get all customers.
+*   `GET /api/customers/search?keyword={term}` - Search customers.
+
+### Inventory
+*   `POST /api/inventory` - Add inventory for a product in a branch.
+*   `PUT /api/inventory/{inventoryId}` - Update inventory quantity.
+*   `DELETE /api/inventory/{inventoryId}` - Remove inventory record.
+*   `GET /api/inventory/branch/{branchId}` - Get all inventory for a branch.
+*   `GET /api/inventory/branch/{branchId}/search?productName={name}` - Search inventory by product name.
+*   `GET /api/inventory/branch/{branchId}/product/{productId}` - Get specific inventory item.
+
+### Orders
+*   `POST /api/orders` - Create a new order.
+*   `GET /api/orders/{orderId}` - Get order by ID.
+*   `DELETE /api/orders/{orderId}` - Delete an order.
+*   `GET /api/orders/branch/{branchId}` - Get orders by branch (supports filtering by customer, cashier, status).
+*   `GET /api/orders/branch/{branchId}/today` - Get today's orders for a branch.
+*   `GET /api/orders/branch/{branchId}/top5` - Get top 5 orders by value for a branch.
+*   `GET /api/orders/cashier/{cashierId}` - Get orders processed by a cashier.
+*   `GET /api/orders/customer/{customerId}` - Get orders for a specific customer.
 
 ### Stores
 *   (Endpoints available in `StoreController`)
