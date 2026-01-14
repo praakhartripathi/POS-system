@@ -23,10 +23,18 @@ public class Order {
     private Long id;
 
     @ManyToOne
-    private User customer;
+    private Customer customer;
 
     @ManyToOne
     private Store store;
+
+    @ManyToOne
+    @JoinColumn(name = "branch_id")
+    private Branch branch;
+
+    @ManyToOne
+    @JoinColumn(name = "cashier_id")
+    private User cashier;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<OrderItem> items = new ArrayList<>();

@@ -35,6 +35,10 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
+    @ManyToOne
+    @JoinColumn(name = "branch_id")
+    private Branch branch;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
