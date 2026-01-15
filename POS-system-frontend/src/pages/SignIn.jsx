@@ -23,6 +23,7 @@ const SignIn = () => {
       if (token) {
         localStorage.setItem("token", token);
         localStorage.setItem("role", data.role);
+        localStorage.setItem("name", data.name || "User");
 
         switch (data.role) {
           case "ROLE_SUPERADMIN":
