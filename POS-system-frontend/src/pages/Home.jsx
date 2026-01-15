@@ -21,6 +21,30 @@ const Home = () => {
 
   return (
     <div className="container mx-auto p-4 text-center py-20">
+      <div className="flex flex-wrap justify-center gap-3 mb-8">
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
+          <Zap className="h-4 w-4" /> Fast Checkout
+        </span>
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
+          <BarChart className="h-4 w-4" /> Real-time Analytics
+        </span>
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
+          <Shield className="h-4 w-4" /> Secure Access
+        </span>
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
+          <FileText className="h-4 w-4" /> GST Ready
+        </span>
+      </div>
+
+      <div className="flex flex-wrap justify-center gap-4 mb-8">
+        <button className="px-6 py-3 rounded-md bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors">
+          Get Started
+        </button>
+        <button className="px-6 py-3 rounded-md border bg-background hover:bg-accent hover:text-accent-foreground font-semibold transition-colors flex items-center gap-2">
+          <Play className="h-4 w-4" /> Watch Demo Video
+        </button>
+      </div>
+
       <h1 className="text-4xl font-bold">Trusted by leading retailers across India</h1>
       <p className="mt-4 text-xl">Join thousands of successful businesses using our POS system</p>
 
@@ -93,6 +117,30 @@ const Briefcase = ({ className }) => (
 const Coffee = ({ className }) => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
     <path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" x2="6" y1="2" y2="4"/><line x1="10" x2="10" y1="2" y2="4"/><line x1="14" x2="14" y1="2" y2="4"/>
+  </svg>
+)
+
+const BarChart = ({ className }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <line x1="12" x2="12" y1="20" y2="10"/><line x1="18" x2="18" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="16"/>
+  </svg>
+)
+
+const Shield = ({ className }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/>
+  </svg>
+)
+
+const FileText = ({ className }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><line x1="10" x2="8" y1="9" y2="9"/>
+  </svg>
+)
+
+const Play = ({ className }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <polygon points="5 3 19 12 5 21 5 3"/>
   </svg>
 )
 
