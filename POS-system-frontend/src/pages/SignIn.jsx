@@ -19,9 +19,31 @@ const SignIn = () => {
       const data = await signin({ email, password });
 
       console.log("Sign in successful:", data);
-      if (data.token) {
-        localStorage.setItem("token", data.token);
-        navigate("/dashboard");
+      const token = data.token || data.jwt;
+      if (token) {
+        localStorage.setItem("token", token);
+        localStorage.setItem("role", data.role);
+
+        switch (data.role) {
+          case "ROLE_SUPERADMIN":
+            navigate("/super-admin/dashboard");
+            break;
+          case "ROLE_ADMIN":
+            navigate("/admin/dashboard");
+            break;
+          case "ROLE_STORE_MANAGER":
+            navigate("/store-manager/dashboard");
+            break;
+          case "ROLE_BRANCH_MANAGER":
+            navigate("/branch-manager/dashboard");
+            break;
+          case "ROLE_CASHIER":
+            navigate("/cashier/dashboard");
+            break;
+          case "ROLE_USER":
+          default:
+            navigate("/dashboard");
+        }
       }
     } catch (err) {
       setError(err.message);

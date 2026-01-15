@@ -8,6 +8,12 @@ import Testimonials from './pages/Testimonials'
 import Contact from './pages/Contact'
 import SignIn from './pages/SignIn'
 import RequestDemo from './pages/RequestDemo'
+import CashierDashboard from './pages/CashierDashboard'
+import AdminDashboard from './pages/AdminDashboard'
+import SuperAdminDashboard from './pages/SuperAdminDashboard'
+import StoreManagerDashboard from './pages/StoreManagerDashboard'
+import BranchManagerDashboard from './pages/BranchManagerDashboard'
+import UserDashboard from './pages/UserDashboard'
 
 function App() {
   const [theme, setTheme] = useState('system')
@@ -35,6 +41,12 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/request-demo" element={<RequestDemo />} />
+          <Route path="/cashier/dashboard" element={<CashierDashboard />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/super-admin/dashboard" element={<SuperAdminDashboard />} />
+          <Route path="/store-manager/dashboard" element={<StoreManagerDashboard />} />
+          <Route path="/branch-manager/dashboard" element={<BranchManagerDashboard />} />
+          <Route path="/dashboard" element={<UserDashboard />} />
         </Routes>
       </div>
     </Router>
