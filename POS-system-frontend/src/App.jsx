@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import './App.css'
 import Navbar from './component/Navbar'
 import Home from './pages/Home'
@@ -14,6 +14,19 @@ import SuperAdminDashboard from './pages/SuperAdminDashboard'
 import StoreManagerDashboard from './pages/StoreManagerDashboard'
 import BranchManagerDashboard from './pages/BranchManagerDashboard'
 import UserDashboard from './pages/UserDashboard'
+
+const Layout = ({ children, theme, setTheme }) => {
+  const location = useLocation();
+  // Hide Navbar on dashboard routes
+  const isDashboard = location.pathname.includes('/dashboard');
+
+  return (
+    <div className="min-h-screen w-full bg-background text-foreground">
+      {!isDashboard && <Navbar theme={theme} setTheme={setTheme} />}
+      {children}
+    </div>
+  );
+};
 
 function App() {
   const [theme, setTheme] = useState('system')
@@ -32,8 +45,7 @@ function App() {
 
   return (
     <Router>
-      <div className="min-h-screen w-full bg-background text-foreground">
-        <Navbar theme={theme} setTheme={setTheme} />
+      <Layout theme={theme} setTheme={setTheme}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/pricing" element={<Pricing />} />
@@ -47,8 +59,11 @@ function App() {
           <Route path="/store-manager/dashboard" element={<StoreManagerDashboard />} />
           <Route path="/branch-manager/dashboard" element={<BranchManagerDashboard />} />
           <Route path="/dashboard" element={<UserDashboard />} />
+
+          {/* Fallback Route: Redirect unknown paths to Home to prevent blank screens */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-      </div>
+      </Layout>
     </Router>
   )
 }

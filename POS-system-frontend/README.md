@@ -1,16 +1,64 @@
-# React + Vite
+# POS Pro - Point of Sale System Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, role-based Point of Sale (POS) web application interface built with React, Vite, and Tailwind CSS. Designed to mimic professional retail billing systems with a focus on speed and usability.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 🔐 Role-Based Access Control (RBAC)
+Secure login system that redirects users to specific dashboards based on their assigned role:
+- **Super Admin**: System-wide control center.
+- **Admin**: User management and reporting.
+- **Branch Manager**: Branch performance and operations.
+- **Store Manager**: Inventory and staff overview.
+- **Cashier**: Dedicated POS terminal interface.
+- **User**: Customer loyalty and order history.
 
-## React Compiler
+### 🛒 Cashier POS Terminal
+A high-fidelity, full-screen POS interface designed for efficiency:
+- **Keyboard Shortcuts**:
+  - `F1`: Focus Search / Scan Barcode
+  - `F2`: Discount Options (Mockup)
+  - `F3`: Customer Selection (Mockup)
+  - `Ctrl + Enter`: Proceed to Payment
+- **Real-time Search**: Filter products instantly by name or category.
+- **Cart Management**: Add items, update quantities, and remove items with automatic tax calculation.
+- **Dark Mode**: Fully supported dark theme for low-light environments.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 🎨 UI/UX
+- **Responsive Design**: Built with Tailwind CSS for a clean, modern look.
+- **Theme Support**: Light, Dark, and System preference toggles.
+- **Landing Page**: Includes Home, Pricing, Testimonials, and Contact pages.
 
-## Expanding the ESLint configuration
+## 🛠️ Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Framework**: React (Vite)
+- **Styling**: Tailwind CSS
+- **Routing**: React Router DOM
+- **State Management**: React Hooks (useState, useEffect, useRef)
+
+## 📦 Installation & Setup
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd POS-system-frontend
+   ```
+
+2. **Install Dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Run Development Server**
+   ```bash
+   npm run dev
+   ```
+
+4. **Build for Production**
+   ```bash
+   npm run build
+   ```
+
+## 🔑 Default Roles for Testing
+The application handles the following role strings from the backend:
+- `ROLE_SUPERADMIN`, `ROLE_ADMIN`, `ROLE_BRANCH_MANAGER`, `ROLE_STORE_MANAGER`, `ROLE_CASHIER`, `ROLE_USER`
