@@ -1,44 +1,360 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const BranchManagerDashboard = () => {
+const BranchManagerDashboard = ({ theme, setTheme }) => {
   const navigate = useNavigate();
+  const [activeView, setActiveView] = useState("DASHBOARD");
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
+    localStorage.removeItem("name");
     navigate("/signin");
   };
 
-  return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <div className="max-w-7xl mx-auto">
-        <header className="flex justify-between items-center mb-8 bg-white p-6 rounded-xl shadow-sm border">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Branch Manager Dashboard</h1>
-            <p className="text-gray-500">Branch Performance & Operations</p>
-          </div>
-          <button 
-            onClick={handleLogout}
-            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-          >
-            Logout
-          </button>
-        </header>
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+  };
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white p-6 rounded-xl shadow-sm border">
-            <h3 className="font-semibold text-gray-700">Today's Sales</h3>
-            <p className="text-3xl font-bold text-green-600 mt-2">$12,450</p>
+  return (
+    <div className={`flex h-screen transition-colors duration-200 ${theme === "dark" ? "dark bg-gray-900" : "bg-gray-50"}`}>
+      {/* Sidebar */}
+      <aside className="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col fixed h-full z-10 transition-colors duration-200">
+        {/* Sidebar Header */}
+        <div className="p-6 border-b border-gray-100 dark:border-gray-700 flex items-center gap-3">
+          <div className="p-2 bg-blue-600 rounded-lg text-white">
+            <Store className="w-6 h-6" />
           </div>
-          <div className="bg-white p-6 rounded-xl shadow-sm border">
-            <h3 className="font-semibold text-gray-700">Active Registers</h3>
-            <p className="text-3xl font-bold text-blue-600 mt-2">4/5</p>
+          <span className="text-lg font-bold text-gray-800 dark:text-white">Branch Manager</span>
+        </div>
+
+        {/* Branch Info */}
+        <div className="px-6 py-4 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-700">
+          <div className="flex items-start gap-3">
+            <div className="mt-1 text-gray-400">
+              <MapPin className="w-4 h-4" />
+            </div>
+            <div>
+              <h3 className="text-sm font-bold text-gray-900 dark:text-white">Surat East Branch</h3>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Ambavadi choke near ashoka complex, Surat</p>
+            </div>
           </div>
         </div>
-      </div>
+
+        {/* Navigation */}
+        <nav className="flex-1 overflow-y-auto p-4 space-y-1">
+          <MenuItem icon={<LayoutDashboard />} label="Dashboard" active={activeView === "DASHBOARD"} onClick={() => setActiveView("DASHBOARD")} />
+          <MenuItem icon={<ShoppingCart />} label="Orders" active={activeView === "ORDERS"} onClick={() => setActiveView("ORDERS")} />
+          <MenuItem icon={<RotateCcw />} label="Refunds" active={activeView === "REFUNDS"} onClick={() => setActiveView("REFUNDS")} />
+          <MenuItem icon={<CreditCard />} label="Transactions" active={activeView === "TRANSACTIONS"} onClick={() => setActiveView("TRANSACTIONS")} />
+          <MenuItem icon={<Package />} label="Inventory" active={activeView === "INVENTORY"} onClick={() => setActiveView("INVENTORY")} />
+          <MenuItem icon={<Users />} label="Employees" active={activeView === "EMPLOYEES"} onClick={() => setActiveView("EMPLOYEES")} />
+          <MenuItem icon={<UserCircle />} label="Customers" active={activeView === "CUSTOMERS"} onClick={() => setActiveView("CUSTOMERS")} />
+          <MenuItem icon={<FileText />} label="Reports" active={activeView === "REPORTS"} onClick={() => setActiveView("REPORTS")} />
+        </nav>
+
+        {/* Bottom Actions */}
+        <div className="p-4 border-t border-gray-200 dark:border-gray-700 space-y-2 bg-white dark:bg-gray-800">
+          <MenuItem icon={<Settings />} label="Settings" active={activeView === "SETTINGS"} onClick={() => setActiveView("SETTINGS")} />
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors font-medium"
+          >
+            <LogOut className="w-5 h-5" />
+            <span>Logout</span>
+          </button>
+        </div>
+      </aside>
+
+      {/* Main Content */}
+      <main className="flex-1 ml-64 p-8 overflow-y-auto h-full">
+        <header className="flex justify-between items-center mb-8 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 transition-colors duration-200">
+          {/* Left: Branch Address */}
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
+              <MapPin className="w-5 h-5" />
+            </div>
+            <div>
+              <h1 className="text-lg font-bold text-gray-900 dark:text-white">Surat East Branch</h1>
+              <p className="text-xs text-gray-500 dark:text-gray-400">Ambavadi choke near ashoka complex</p>
+            </div>
+          </div>
+
+          {/* Right: Actions & Profile */}
+          <div className="flex items-center gap-4">
+            <button onClick={toggleTheme} className="p-2 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors">
+              {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </button>
+
+            <button className="p-2 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors relative">
+              <Bell className="w-5 h-5" />
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
+            </button>
+            
+            <div className="h-8 w-px bg-gray-200 dark:bg-gray-700 mx-1"></div>
+
+            <div className="text-right hidden md:block">
+              <p className="text-sm font-bold text-gray-900 dark:text-white">{localStorage.getItem("name") || "Branch Manager"}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">manager@pos-system.com</p>
+            </div>
+            <div className="h-10 w-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold border border-blue-200">
+              {(localStorage.getItem("name")?.[0] || "B").toUpperCase()}
+            </div>
+          </div>
+        </header>
+
+        {activeView === "DASHBOARD" ? (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            {/* Today's Sales */}
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 transition-colors duration-200 flex items-center justify-between">
+              <div>
+                <h3 className="font-semibold text-gray-700 dark:text-gray-300 text-sm">Today's Sales</h3>
+                <p className="text-2xl font-bold text-green-600 mt-1">₹12,450</p>
+                <div className="flex items-center gap-1 mt-1">
+                  <TrendingUp className="w-3 h-3 text-green-500" />
+                  <span className="text-xs font-medium text-green-500">+12.5%</span>
+                  <span className="text-xs text-gray-400 dark:text-gray-500">vs yesterday</span>
+                </div>
+              </div>
+              <div className="p-3 bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 rounded-lg">
+                <CreditCard className="w-6 h-6" />
+              </div>
+            </div>
+
+            {/* Orders Today */}
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 transition-colors duration-200 flex items-center justify-between">
+              <div>
+                <h3 className="font-semibold text-gray-700 dark:text-gray-300 text-sm">Orders Today</h3>
+                <p className="text-2xl font-bold text-purple-600 mt-1">142</p>
+                <div className="flex items-center gap-1 mt-1">
+                  <TrendingUp className="w-3 h-3 text-green-500" />
+                  <span className="text-xs font-medium text-green-500">+8.2%</span>
+                  <span className="text-xs text-gray-400 dark:text-gray-500">vs yesterday</span>
+                </div>
+              </div>
+              <div className="p-3 bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 rounded-lg">
+                <ShoppingCart className="w-6 h-6" />
+              </div>
+            </div>
+
+            {/* Active Cashiers */}
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 transition-colors duration-200 flex items-center justify-between">
+              <div>
+                <h3 className="font-semibold text-gray-700 dark:text-gray-300 text-sm">Active Cashiers</h3>
+                <p className="text-2xl font-bold text-blue-600 mt-1">4/5</p>
+                <div className="flex items-center gap-1 mt-1">
+                  <TrendingDown className="w-3 h-3 text-orange-500" />
+                  <span className="text-xs font-medium text-orange-500">-1</span>
+                  <span className="text-xs text-gray-400 dark:text-gray-500">vs last shift</span>
+                </div>
+              </div>
+              <div className="p-3 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-lg">
+                <Users className="w-6 h-6" />
+              </div>
+            </div>
+
+            {/* Low Stock */}
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 transition-colors duration-200 flex items-center justify-between">
+              <div>
+                <h3 className="font-semibold text-gray-700 dark:text-gray-300 text-sm">Low Stock Items</h3>
+                <p className="text-2xl font-bold text-red-600 mt-1">12</p>
+                <div className="flex items-center gap-1 mt-1">
+                  <TrendingUp className="w-3 h-3 text-red-500" />
+                  <span className="text-xs font-medium text-red-500">+2.4%</span>
+                  <span className="text-xs text-gray-400 dark:text-gray-500">vs yesterday</span>
+                </div>
+              </div>
+              <div className="p-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-lg">
+                <AlertTriangle className="w-6 h-6" />
+              </div>
+            </div>
+          </div>
+
+            <div className="mb-8">
+              {/* Payment Breakdown */}
+              <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 transition-colors duration-200">
+                <h3 className="font-bold text-gray-800 dark:text-white mb-6">Payment Breakdown</h3>
+                <div className="space-y-6">
+                  {/* UPI */}
+                  <div className="flex items-center gap-4">
+                    <div className="p-3 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-lg">
+                      <Smartphone className="w-6 h-6" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex justify-between mb-1">
+                        <span className="font-medium text-gray-700 dark:text-gray-300">UPI</span>
+                        <span className="font-bold text-gray-900 dark:text-white">65%</span>
+                      </div>
+                      <div className="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-2">
+                        <div className="bg-blue-600 h-2 rounded-full" style={{ width: "65%" }}></div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-bold text-gray-900 dark:text-white">₹8,092</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">120 txns</p>
+                    </div>
+                  </div>
+
+                  {/* Card */}
+                  <div className="flex items-center gap-4">
+                    <div className="p-3 bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 rounded-lg">
+                      <CreditCard className="w-6 h-6" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex justify-between mb-1">
+                        <span className="font-medium text-gray-700 dark:text-gray-300">Card</span>
+                        <span className="font-bold text-gray-900 dark:text-white">25%</span>
+                      </div>
+                      <div className="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-2">
+                        <div className="bg-purple-600 h-2 rounded-full" style={{ width: "25%" }}></div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-bold text-gray-900 dark:text-white">₹3,112</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">45 txns</p>
+                    </div>
+                  </div>
+
+                  {/* Cash */}
+                  <div className="flex items-center gap-4">
+                    <div className="p-3 bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 rounded-lg">
+                      <Banknote className="w-6 h-6" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex justify-between mb-1">
+                        <span className="font-medium text-gray-700 dark:text-gray-300">Cash</span>
+                        <span className="font-bold text-gray-900 dark:text-white">10%</span>
+                      </div>
+                      <div className="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-2">
+                        <div className="bg-green-600 h-2 rounded-full" style={{ width: "10%" }}></div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-bold text-gray-900 dark:text-white">₹1,245</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">18 txns</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+              {/* Daily Sales Trend */}
+              <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 transition-colors duration-200">
+                <div className="flex justify-between items-center mb-6">
+                  <h3 className="font-bold text-gray-800 dark:text-white">Daily Sales Trend</h3>
+                  <select className="bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 text-sm rounded-lg p-2 outline-none">
+                    <option>Last 7 Days</option>
+                    <option>Last 30 Days</option>
+                  </select>
+                </div>
+                <div className="flex items-end justify-between h-64 gap-2">
+                  {[45, 60, 35, 70, 55, 80, 65].map((height, i) => (
+                    <div key={i} className="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
+                      <div className="w-full bg-blue-100 dark:bg-blue-900/30 rounded-t-lg h-full flex items-end relative">
+                        <div 
+                          className="w-full bg-blue-600 dark:bg-blue-500 rounded-t-lg transition-all duration-500 group-hover:bg-blue-700 dark:group-hover:bg-blue-400 relative"
+                          style={{ height: `${height}%` }}
+                        >
+                          {/* Tooltip */}
+                          <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10 pointer-events-none shadow-lg">
+                            ₹{(height * 250).toLocaleString()}
+                            <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                          </div>
+                        </div>
+                      </div>
+                      <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">
+                        {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][i]}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Product Performance */}
+              <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 transition-colors duration-200">
+                <div className="flex justify-between items-center mb-6">
+                  <h3 className="font-bold text-gray-800 dark:text-white">Top Products</h3>
+                  <button className="text-blue-600 dark:text-blue-400 text-sm font-medium hover:underline">View All</button>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="text-xs text-gray-500 dark:text-gray-400 border-b border-gray-100 dark:border-gray-700">
+                        <th className="pb-3 font-medium">Product</th>
+                        <th className="pb-3 font-medium">Category</th>
+                        <th className="pb-3 font-medium text-right">Sales</th>
+                        <th className="pb-3 font-medium text-right">Revenue</th>
+                      </tr>
+                    </thead>
+                    <tbody className="text-sm">
+                      {[
+                        { name: "Men's Cotton Shirt", category: "Apparel", sales: 124, revenue: 148800 },
+                        { name: "Wireless Earbuds", category: "Electronics", sales: 85, revenue: 212500 },
+                        { name: "Organic Green Tea", category: "Grocery", sales: 245, revenue: 61250 },
+                        { name: "Running Shoes", category: "Footwear", sales: 56, revenue: 168000 },
+                        { name: "Smart Watch Gen 5", category: "Electronics", sales: 32, revenue: 159680 },
+                      ].map((product, i) => (
+                        <tr key={i} className="border-b border-gray-50 dark:border-gray-700/50 last:border-0 hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors">
+                          <td className="py-3 text-gray-900 dark:text-white font-medium">{product.name}</td>
+                          <td className="py-3 text-gray-500 dark:text-gray-400">{product.category}</td>
+                          <td className="py-3 text-gray-900 dark:text-white text-right">{product.sales}</td>
+                          <td className="py-3 text-gray-900 dark:text-white text-right">₹{product.revenue.toLocaleString()}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="bg-white dark:bg-gray-800 p-12 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 text-center transition-colors duration-200">
+            <div className="inline-flex p-4 bg-gray-100 dark:bg-gray-700 rounded-full mb-4 text-gray-400">
+              <Settings className="w-8 h-8" />
+            </div>
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white">Module Under Development</h3>
+            <p className="text-gray-500 dark:text-gray-400 mt-1">The {activeView.toLowerCase()} module is coming soon.</p>
+          </div>
+        )}
+      </main>
     </div>
   );
 };
+
+const MenuItem = ({ icon, label, active, onClick }) => (
+  <button
+    onClick={onClick}
+    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors font-medium text-sm ${
+      active ? "bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400" : "text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+    }`}
+  >
+    {React.cloneElement(icon, { className: "w-5 h-5" })}
+    <span>{label}</span>
+  </button>
+);
+
+// Icons
+const Store = (props) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/><path d="M22 7v3a2 2 0 0 1-2 2v0a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12v0a2 2 0 0 1-2-2V7"/></svg>;
+const MapPin = (props) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>;
+const LayoutDashboard = (props) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>;
+const ShoppingCart = (props) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>;
+const RotateCcw = (props) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>;
+const CreditCard = (props) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>;
+const Package = (props) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>;
+const Users = (props) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>;
+const UserCircle = (props) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"/></svg>;
+const FileText = (props) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><line x1="10" x2="8" y1="9" y2="9"/></svg>;
+const Settings = (props) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M12.22 2h-.44a2 2 0 0 1-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.1a2 2 0 0 1-1-1.72v-.51a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>;
+const LogOut = (props) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>;
+const Bell = (props) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>;
+const Moon = (props) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>;
+const Sun = (props) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>;
+const AlertTriangle = (props) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>;
+const TrendingUp = (props) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>;
+const TrendingDown = (props) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>;
+const Smartphone = (props) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>;
+const Banknote = (props) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>;
 
 export default BranchManagerDashboard;

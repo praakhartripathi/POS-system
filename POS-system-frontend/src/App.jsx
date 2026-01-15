@@ -57,7 +57,7 @@ function App() {
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/super-admin/dashboard" element={<SuperAdminDashboard />} />
           <Route path="/store-manager/dashboard" element={<StoreManagerDashboard />} />
-          <Route path="/branch-manager/dashboard" element={<BranchManagerDashboard />} />
+          <Route path="/branch-manager/dashboard" element={<BranchManagerDashboard theme={theme} setTheme={setTheme} />} />
           <Route path="/dashboard" element={<UserDashboard />} />
 
           {/* Fallback Route: Redirect unknown paths to Home to prevent blank screens */}

@@ -33,6 +33,7 @@ public class User {
     private String phone;
 
     @Enumerated(EnumType.STRING)
+    @Column(length = 50)
     private UserRole role;
 
     @ManyToOne
