@@ -8,8 +8,9 @@ RUN mvn clean package -DskipTests
 # Stage 2: Run the application
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
-# Explicitly copy the jar file.
-# The build artifact name is typically artifactId-version.jar
-COPY --from=build /app/target/POS-system-backend-0.0.1-SNAPSHOT.jar app.jar
+# Copy the specific jar file.
+# The previous error "Unable to access jarfile app.jar" usually means the COPY failed silently or copied nothing/wrong thing.
+# Let's try to be very specific again, but also ensure we are copying to the right place.
+COPY --from=build /app/target/POS-system-backend-0.0.1-SNAPSHOT.jar /app/app.jar
 EXPOSE 5000
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
