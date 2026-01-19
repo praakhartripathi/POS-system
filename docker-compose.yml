@@ -28,17 +28,27 @@ services:
       SPRING_DATASOURCE_USERNAME: pos_user
       SPRING_DATASOURCE_PASSWORD: password
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_DEVTOOLS_RESTART_ENABLED: "true"
+    volumes:
+      - ./POS-system-backend:/app
+    working_dir: /app
+    command: ./mvnw spring-boot:run
     depends_on:
       - db
     networks:
       - pos-network
 
   frontend:
-    build: ./POS-system-frontend
+    build:
+      context: ./POS-system-frontend
+      target: dev
     container_name: pos-frontend
     restart: always
     ports:
-      - "3000:80"
+      - "3000:5173"
+    volumes:
+      - ./POS-system-frontend:/app
+      - /app/node_modules
     depends_on:
       - backend
     networks:

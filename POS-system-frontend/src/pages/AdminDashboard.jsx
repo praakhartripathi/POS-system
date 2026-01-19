@@ -5,6 +5,7 @@ import BranchesView from "../component/BranchesView";
 import ProductsView from "../component/ProductsView";
 import CategoriesView from "../component/CategoriesView";
 import EmployeesView from "../component/EmployeesView";
+import AlertsView from "../component/AlertsView";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -149,6 +150,8 @@ const AdminDashboard = () => {
             <CategoriesView />
           ) : activeItem === "Employees" ? (
             <EmployeesView />
+          ) : activeItem === "Alerts" ? (
+            <AlertsView />
           ) : (
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-12 text-center">
             <div className="inline-flex p-4 bg-gray-50 rounded-full mb-4">

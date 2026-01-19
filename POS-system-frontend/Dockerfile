@@ -1,11 +1,16 @@
 # Stage 1: Build the application
-FROM node:20-alpine AS build
+FROM node:20-alpine AS base
 
 WORKDIR /app
 
 COPY package*.json ./
 RUN npm install
 
+FROM base AS dev
+COPY . .
+CMD ["npm", "run", "dev", "--", "--host"]
+
+FROM base AS build
 COPY . .
 RUN npm run build
 
