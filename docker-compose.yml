@@ -1,0 +1,52 @@
+version: "3.8"
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: pos-db
+    restart: always
+    environment:
+      MYSQL_DATABASE: pos_db
+      MYSQL_USER: pos_user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - pos-network
+
+  backend:
+    build: ./POS-system-backend
+    container_name: pos-backend
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/pos_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: pos_user
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      - db
+    networks:
+      - pos-network
+
+  frontend:
+    build: ./POS-system-frontend
+    container_name: pos-frontend
+    restart: always
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - pos-network
+
+networks:
+  pos-network:
+    driver: bridge
+
+volumes:
+  db_data:
