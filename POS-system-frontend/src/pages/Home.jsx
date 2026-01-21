@@ -41,7 +41,7 @@ const Home = () => {
           Get Started
         </button>
         <button className="px-6 py-3 rounded-md border bg-background hover:bg-accent hover:text-accent-foreground font-semibold transition-colors flex items-center gap-2">
-          <Play className="h-4 w-4" /> Watch Demo Video
+          <Play className="h-4 w-4" /> Request Demo
         </button>
       </div>
 

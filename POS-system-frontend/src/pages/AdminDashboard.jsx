@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import StoresView from "../component/StoresView";
-import BranchesView from "../component/BranchesView";
-import ProductsView from "../component/ProductsView";
-import CategoriesView from "../component/CategoriesView";
-import EmployeesView from "../component/EmployeesView";
+import StoresView from "../view/StoresView";
+import BranchesView from "../view/BranchesView";
+import ProductsView from "../view/ProductsView";
+import CategoriesView from "../view/CategoriesView";
+import EmployeesView from "../view/EmployeesView";
 import AlertsView from "../component/AlertsView";
-import SalesView from "../component/SalesView";
-import TransactionsView from "../component/TransactionsView";
+import SalesView from "../view/SalesView";
+import TransactionsView from "../view/TransactionsView";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import OrderDetailsModal from "./OrderDetailsModal";
+import OrderDetailsModal from "../modal/OrderDetailsModal";
 
 const OrdersView = () => {
   const [searchTerm, setSearchTerm] = useState("");

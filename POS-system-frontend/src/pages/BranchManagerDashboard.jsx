@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import OrdersView from "../component/OrdersView";
-import RefundsView from "../component/RefundsView";
-import TransactionsView from "../component/TransactionsView";
-import InventoryView from "../component/InventoryView";
-import EmployeesView from "../component/EmployeesView";
+import OrdersView from "../view/OrdersView";
+import RefundsView from "../view/RefundsView";
+import TransactionsView from "../view/TransactionsView";
+import InventoryView from "../view/InventoryView";
+import EmployeesView from "../view/EmployeesView";
 import CustomersView from "../component/CustomersView";
-import ReportsView from "../component/ReportsView";
-import SettingsView from "../component/SettingsView";
+import ReportsView from "../view/ReportsView";
+import SettingsView from "../view/SettingsView";
 
 const BranchManagerDashboard = ({ theme, setTheme }) => {
   const navigate = useNavigate();

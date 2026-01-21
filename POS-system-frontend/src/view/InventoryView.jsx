@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
-import AddInventoryModal from "./AddInventoryModal";
-import AddCategoryModal from "./AddCategoryModal";
+import AddInventoryModal from "../modal/AddInventoryModal";
+import AddCategoryModal from "../modal/AddCategoryModal";
 
 const InventoryView = () => {
   const [searchTerm, setSearchTerm] = useState("");

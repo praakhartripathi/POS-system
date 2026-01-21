@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import AddCustomerModal from "./AddCustomerModal";
-import CustomerDetailsModal from "./CustomerDetailsModal";
+import AddCustomerModal from "../modal/AddCustomerModal";
+import CustomerDetailsModal from "../modal/CustomerDetailsModal";
 
 const CustomersView = () => {
     const [searchTerm, setSearchTerm] = useState("");

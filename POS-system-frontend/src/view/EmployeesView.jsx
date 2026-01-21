@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import AddEmployeeModal from "./AddEmployeeModal";
-import EmployeeDetailsModal from "./EmployeeDetailsModal";
+import AddEmployeeModal from "../modal/AddEmployeeModal";
+import EmployeeDetailsModal from "../modal/EmployeeDetailsModal";
 
 const EmployeesView = () => {
   const [searchTerm, setSearchTerm] = useState("");

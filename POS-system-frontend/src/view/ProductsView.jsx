@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import AddProductModal from "./AddProductModal";
-import ProductDetailsModal from "./ProductDetailsModal";
+import AddProductModal from "../modal/AddProductModal";
+import ProductDetailsModal from "../modal/ProductDetailsModal";
 import dummyProducts from "../data/dummyProducts";
 
 const ProductsView = () => {
