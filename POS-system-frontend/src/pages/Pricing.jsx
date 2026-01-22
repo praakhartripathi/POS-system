@@ -72,10 +72,10 @@ const Pricing = () => {
             Choose the plan that fits your business needs. No hidden fees.
           </p>
           
-          <div className="inline-flex items-center gap-2 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400 px-6 py-3 rounded-full font-bold text-sm shadow-sm border border-yellow-200 dark:border-yellow-800">
+          <Link to="/signup" className="inline-flex items-center gap-2 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400 px-6 py-3 rounded-full font-bold text-sm shadow-sm border border-yellow-200 dark:border-yellow-800 hover:bg-yellow-200 dark:hover:bg-yellow-900/50 transition-colors">
             <span className="text-lg">👉</span>
             7 Days Free – No Credit Card Required
-          </div>
+          </Link>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">

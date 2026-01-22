@@ -1,25 +1,10 @@
 package com.POS_system_backend.controller;
 
-import com.POS_system_backend.dto.StoreRequest;
-import com.POS_system_backend.service.DemoRequestService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/public")
+@RequestMapping("/api/public-deprecated")
 public class PublicController {
-
-    @Autowired
-    private DemoRequestService demoRequestService;
-
-    @PostMapping("/demo-request")
-    public ResponseEntity<StoreRequest.DemoRequest> submitDemoRequest(@RequestBody StoreRequest.DemoRequest demoRequest) {
-        StoreRequest.DemoRequest createdRequest = demoRequestService.createDemoRequest(demoRequest);
-        return new ResponseEntity<>(createdRequest, HttpStatus.CREATED);
-    }
+    // This controller is deprecated. Use DemoController instead.
 }
