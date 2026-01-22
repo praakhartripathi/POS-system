@@ -1,6 +1,6 @@
 const submitDemoRequest = async (formData) => {
   // Use the environment variable or fallback to localhost
-  const API_URL = import.meta.env.VITE_AUTH_API || "http://localhost:5000";
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
   try {
     const response = await fetch(`${API_URL}/api/public/demo-request`, {

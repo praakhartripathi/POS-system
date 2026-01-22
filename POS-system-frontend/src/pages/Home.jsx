@@ -1,6 +1,8 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
+  const navigate = useNavigate();
   const features = [
     { title: "Supermarket", icon: <Store className="h-6 w-6" /> },
     { title: "Fresh Grocery", icon: <Leaf className="h-6 w-6" /> },
@@ -40,7 +42,10 @@ const Home = () => {
         <button className="px-6 py-3 rounded-md bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors">
           Get Started
         </button>
-        <button className="px-6 py-3 rounded-md border bg-background hover:bg-accent hover:text-accent-foreground font-semibold transition-colors flex items-center gap-2">
+        <button 
+          onClick={() => navigate('/request-demo')}
+          className="px-6 py-3 rounded-md border bg-background hover:bg-accent hover:text-accent-foreground font-semibold transition-colors flex items-center gap-2"
+        >
           <Play className="h-4 w-4" /> Request Demo
         </button>
       </div>
