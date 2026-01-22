@@ -15,17 +15,38 @@ const TrialSignup = () => {
     e.preventDefault();
     setLoading(true);
 
-    // Mock Trial Signup Logic
-    console.log("Starting trial with:", { ownerName, businessName, email, mobile, password });
-    
-    setTimeout(() => {
+    try {
+      const response = await fetch("http://localhost:5000/api/trial/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          businessName,
+          ownerName,
+          email,
+          mobile,
+          password,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create trial account");
+      }
+
+      const data = await response.json();
+      console.log("Trial created:", data);
+
+      // Auto-login simulation (In real app, backend should return JWT here)
+      // For now, redirecting to login or dashboard
+      alert("Trial Account Created Successfully! Please Sign In.");
+      navigate("/signin");
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Error creating trial account. Please try again.");
+    } finally {
       setLoading(false);
-      // Auto-login simulation
-      localStorage.setItem("token", "mock-trial-token");
-      localStorage.setItem("role", "ROLE_ADMIN"); // Trial usually gives admin access
-      localStorage.setItem("name", ownerName);
-      navigate("/admin/dashboard");
-    }, 1500);
+    }
   };
 
   const handleGoogleLogin = () => {

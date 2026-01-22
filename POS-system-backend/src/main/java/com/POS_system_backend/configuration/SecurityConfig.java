@@ -3,9 +3,7 @@ package com.POS_system_backend.configuration;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,33 +16,22 @@ import java.util.Arrays;
 import java.util.Collections;
 
 @Configuration
-@EnableMethodSecurity // Enable @PreAuthorize
 public class SecurityConfig {
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .csrf(AbstractHttpConfigurer::disable)
-            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/api/public/**").permitAll() // Allow public access to demo requests
-                .requestMatchers("/login/oauth2/**").permitAll()
-                .requestMatchers("/h2-console/**").permitAll()
-                .requestMatchers("/api/superadmin/**").hasRole("SUPERADMIN")
-                .requestMatchers("/api/admin/**").hasAnyRole("ADMIN", "SUPERADMIN")
-                .requestMatchers("/api/products/**").hasAnyRole("STORE_MANAGER", "BRANCH_MANAGER", "ADMIN", "SUPERADMIN", "CASHIER")
-                .requestMatchers("/api/categories/**").hasAnyRole("STORE_MANAGER", "BRANCH_MANAGER", "ADMIN", "SUPERADMIN", "CASHIER")
-                .requestMatchers("/api/stores/**").hasAnyRole("STORE_MANAGER", "BRANCH_MANAGER", "ADMIN", "SUPERADMIN")
-                .anyRequest().authenticated()
-            )
-            .oauth2Login(oauth2 -> oauth2
-                // Removed custom loginPage to allow default redirection to Google
-                .defaultSuccessUrl("/api/auth/oauth2/success", true)
-                .failureUrl("/api/auth/oauth2/failure")
-            )
-            .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
-            .addFilterBefore(new JwtValidator(), BasicAuthenticationFilter.class);
+        http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(Authorize -> Authorize
+                        .requestMatchers("/api/auth/**", "/api/public/**", "/api/trial/**").permitAll() // Permit trial endpoints
+                        .requestMatchers("/api/**").authenticated()
+                        .anyRequest().permitAll()
+                )
+                .addFilterBefore(new JwtTokenValidator(), BasicAuthenticationFilter.class)
+                .csrf(csrf -> csrf.disable())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .oauth2Login(oauth2 -> oauth2
+                        .defaultSuccessUrl("/api/auth/oauth2/success", true)
+                );
 
         return http.build();
     }
