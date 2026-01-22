@@ -107,6 +107,7 @@ const SignIn = () => {
           )}
 
           <form onSubmit={handleSubmit}>
+
           {/* Name Field (Sign Up Only) */}
           {isSignUp && (
             <div className="mb-4">
@@ -144,6 +145,7 @@ const SignIn = () => {
               />
             </div>
           </div>
+
 
           {/* Password */}
           <div className="mb-4">

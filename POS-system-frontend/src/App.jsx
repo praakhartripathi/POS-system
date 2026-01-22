@@ -17,6 +17,7 @@ import UserDashboard from './pages/UserDashboard'
 import PointOfSale from './component/PointOfSale'
 import Inventory from './component/Inventory'
 import Analytics from './component/Analytics'
+import TrialSignup from './pages/TrialSignup'
 
 const Layout = ({ children, theme, setTheme }) => {
   const location = useLocation();
@@ -67,6 +68,7 @@ function App() {
           <Route path="/features/point-of-sale" element={<PointOfSale />} />
           <Route path="/features/inventory" element={<Inventory />} />
           <Route path="/features/analytics" element={<Analytics />} />
+          <Route path="/trial-signup" element={<TrialSignup />} />
 
           {/* Fallback Route: Redirect unknown paths to Home to prevent blank screens */}
           <Route path="*" element={<Navigate to="/" replace />} />
