@@ -37,13 +37,8 @@ const TrialSignup = () => {
       const data = await response.json();
       console.log("Trial created:", data);
 
-      if (data.token) {
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("role", data.role);
-        localStorage.setItem("name", data.name);
-        alert("Trial Account Created Successfully!");
-        navigate("/admin/dashboard");
-      }
+      alert("Trial Account Created Successfully! Please Sign In to continue.");
+      navigate("/trial-signin");
     } catch (error) {
       console.error("Error:", error);
       alert("Error creating trial account. Please try again.");

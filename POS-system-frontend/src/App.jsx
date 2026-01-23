@@ -18,7 +18,7 @@ import PointOfSale from './component/PointOfSale'
 import Inventory from './component/Inventory'
 import Analytics from './component/Analytics'
 import TrialSignup from './pages/TrialSignup'
-import TrialSignIn from './pages/TrialSignIn'
+import TrialSignIn from './pages/TrialSignin'
 
 const Layout = ({ children, theme, setTheme }) => {
   const location = useLocation();
